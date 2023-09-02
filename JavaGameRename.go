@@ -149,7 +149,13 @@ func main() {
 	rename := viper.GetInt("Rename") == 1
 
 	VisitDir(viper.GetString("JavaGameDir"), func(filePath string) {
-		if !strings.HasSuffix(filePath, ".jar") {
+		index := strings.LastIndex(filePath, ".")
+		if index == -1 {
+			return
+		}
+		suffix := filePath[index:]
+		suffix = strings.ToLower(suffix)
+		if suffix != ".jar" {
 			return
 		}
 		game := ReadJarMetaInfo(filePath)
